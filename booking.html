@@ -4,164 +4,171 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Book Consultation & Patch Test | BARE by Marlese</title>
+<title>Book Appointment</title>
+
 <script src="./config/config.js"></script>
 
 <link rel="icon" type="image/png" href="/faviconv4.png">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
+:root{
+  --bg:#f7f7f5;
+  --text:#24221a;
+  --brand:#5e6959;
+  --brand-dark:#4f5a4b;
+  --soft:#e7e9e4;
+  --muted:#878274;
+}
+
 body{
-font-family:'Montserrat',sans-serif;
-background:#f7f7f5;
-margin:0;
-padding:0;
-color:#24221a;
+  font-family:'Montserrat',sans-serif;
+  background:var(--bg);
+  margin:0;
+  padding:0;
+  color:var(--text);
 }
 
 .wrap{
-max-width:900px;
-margin:auto;
-padding:40px 20px;
-text-align:center;
+  max-width:900px;
+  margin:auto;
+  padding:40px 20px;
+  text-align:center;
+}
+
+.logo{
+  max-width:140px;
+  margin-bottom:20px;
 }
 
 h1{
-font-weight:500;
-margin-bottom:10px;
+  font-weight:500;
+  margin-bottom:10px;
 }
 
 .steps{
-margin-bottom:35px;
-font-size:14px;
-display:flex;
-justify-content:center;
-gap:10px;
-flex-wrap:wrap;
+  margin-bottom:35px;
+  font-size:14px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
 }
 
 .steps span{
-display:inline-block;
-padding:8px 16px;
-border-radius:30px;
-background:#e7e9e4;
-color:#5e6959;
-font-weight:500;
+  display:inline-block;
+  padding:8px 16px;
+  border-radius:30px;
+  background:var(--soft);
+  color:var(--brand);
+  font-weight:500;
 }
 
 .steps .completed{
-background:#cacdc6;
-color:#24221a;
+  background:#cacdc6;
+  color:var(--text);
 }
 
 .steps .active{
-background:#5e6959;
-color:white;
+  background:var(--brand);
+  color:white;
 }
 
 .booking-box{
-background:white;
-padding:28px 22px;
-border-radius:12px;
-box-shadow:0 5px 20px rgba(0,0,0,0.05);
+  background:white;
+  padding:28px 22px;
+  border-radius:12px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.05);
 }
 
 .booking-box label{
-display:block;
-margin:0 0 10px;
-font-size:13px;
-font-weight:600;
-letter-spacing:.08em;
-text-transform:uppercase;
-color:#5e6959;
+  display:block;
+  margin:0 0 10px;
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--brand);
 }
 
 .booking-box input{
-width:100%;
-max-width:360px;
-padding:14px 16px;
-border:1px solid rgba(36,34,26,.15);
-border-radius:8px;
-font-family:inherit;
-font-size:15px;
-color:#24221a;
-background:#f8f8f6;
+  width:100%;
+  max-width:360px;
+  padding:14px 16px;
+  border:1px solid rgba(36,34,26,.15);
+  border-radius:8px;
+  font-family:inherit;
+  font-size:15px;
+  color:var(--text);
+  background:#f8f8f6;
 }
 
 #available-slots{
-margin-top:24px;
-display:flex;
-justify-content:center;
-gap:10px;
-flex-wrap:wrap;
+  margin-top:24px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
 }
 
 .slot-message{
-width:100%;
-font-size:14px;
-color:#878274;
-line-height:1.6;
+  width:100%;
+  font-size:14px;
+  color:var(--muted);
+  line-height:1.6;
 }
 
 .btn{
-display:inline-block;
-padding:14px 24px;
-background:#5e6959;
-color:white;
-text-decoration:none;
-border:0;
-border-radius:4px;
-margin-top:15px;
-font-family:inherit;
-font-size:14px;
-font-weight:500;
-cursor:pointer;
+  display:inline-block;
+  padding:14px 24px;
+  background:var(--brand);
+  color:white;
+  text-decoration:none;
+  border:0;
+  border-radius:4px;
+  margin-top:15px;
+  font-family:inherit;
+  font-size:14px;
+  font-weight:500;
+  cursor:pointer;
 }
 
 .btn:hover{
-opacity:.9;
+  opacity:.9;
 }
 
 .slot-btn{
-margin:5px;
-min-width:110px;
-  
+  margin:5px;
+  min-width:110px;
 }
+
 .next-slot{
   box-shadow:0 0 0 3px rgba(94,105,89,.18);
-  background:#4f5a4b;
-}
-  
-.button-row{
-display:flex;
-justify-content:center;
-gap:15px;
-margin-top:26px;
-flex-wrap:wrap;
+  background:var(--brand-dark);
 }
 
 #booking-status{
-margin-top:20px;
-font-size:14px;
-line-height:1.6;
+  margin-top:20px;
+  font-size:14px;
+  line-height:1.6;
 }
 
 .success{
-color:#4f5a4b;
-font-weight:600;
+  color:var(--brand-dark);
+  font-weight:600;
 }
 
 .error{
-color:#8a3b3b;
-font-weight:600;
+  color:#8a3b3b;
+  font-weight:600;
 }
 
 .hours-strip{
   display:inline-block;
   margin:8px auto 24px;
   padding:12px 20px;
-  background:#e7e9e4;
-  color:#24221a;
+  background:var(--soft);
+  color:var(--text);
   border-radius:999px;
   font-size:14px;
   line-height:1.5;
@@ -169,38 +176,37 @@ font-weight:600;
 }
 
 .hours-strip strong{
-  color:#5e6959;
+  color:var(--brand);
   font-weight:600;
 }
 
 .hours-strip span{
-  color:#878274;
+  color:var(--muted);
   margin:0 8px;
 }
 
 @media(max-width:700px){
+  .hours-strip{
+    border-radius:14px;
+    display:block;
+  }
 
-.hours-strip{
-  border-radius:14px;
-  display:block;
-}
+  .hours-strip span{
+    display:block;
+    margin:4px 0;
+  }
 
-.hours-strip span{
-  display:block;
-  margin:4px 0;
-}
+  .wrap{
+    padding:28px 16px;
+  }
 
-.wrap{
-padding:28px 16px;
-}
+  .booking-box{
+    padding:22px 16px;
+  }
 
-.booking-box{
-padding:22px 16px;
-}
-
-.booking-box input{
-max-width:100%;
-}
+  .booking-box input{
+    max-width:100%;
+  }
 }
 </style>
 </head>
@@ -209,23 +215,25 @@ max-width:100%;
 
 <div class="wrap">
 
-<h1>Book Consultation & Patch Test</h1>
+<img id="businessLogo" class="logo" alt="Business logo">
+
+<h1 id="pageTitle">Book Appointment</h1>
+
+<p id="businessTagline"></p>
 
 <div class="steps">
   <span class="step completed">✓ Consultation Completed</span>
   <span class="step completed">✓ Deposit Paid</span>
-  <span class="step active">Step 3: Book Consultation & Patch Test</span>
+  <span class="step active" id="activeStep">Step 3: Book Appointment</span>
 </div>
 
-<p>Please select your consultation and patch test appointment time below. This step becomes available once your deposit has been paid.</p>
-  <p class="sub">
-Your consultation includes a patch test and treatment assessment. 
-This appointment must be completed before booking treatment sessions.
-</p>
+<p id="introText"></p>
+
+<p class="sub" id="subText"></p>
 
 <div class="hours-strip">
   <strong>Opening Hours:</strong>
-  Monday–Friday 5pm–8pm <span>•</span> Saturday 9am–11am
+  <span id="openingHours"></span>
 </div>
 
 <div class="booking-box">
@@ -243,17 +251,57 @@ This appointment must be completed before booking treatment sessions.
 </div>
 
 <script>
+const CONFIG = window.CONFIG || {};
+
+const business = CONFIG.business || {};
+const branding = CONFIG.branding || {};
+const booking = CONFIG.booking || {};
+
+const businessName = business.name || "Your Business Name";
+const tagline = business.tagline || "";
+const domain = business.domain || "/";
+const logo = branding.logo || "";
+
+const consultationPrice = booking.consultationPrice || 30;
+const currencySymbol = booking.currencySymbol || "£";
+const openingHoursText = booking.openingHours || "Monday–Friday 5pm–8pm • Saturday 9am–11am";
+
+document.title = `Book Appointment | ${businessName}`;
+
+document.documentElement.style.setProperty("--brand", branding.primaryColor || "#5e6959");
+document.documentElement.style.setProperty("--bg", branding.backgroundColor || "#f7f7f5");
+document.documentElement.style.setProperty("--text", branding.textColor || "#24221a");
+
+document.getElementById("businessLogo").src = logo;
+document.getElementById("businessLogo").style.display = logo ? "inline-block" : "none";
+
+document.getElementById("pageTitle").textContent = booking.pageTitle || "Book Consultation & Patch Test";
+document.getElementById("businessTagline").textContent = tagline;
+document.getElementById("activeStep").textContent = booking.activeStepText || "Step 3: Book Consultation & Patch Test";
+
+document.getElementById("introText").textContent =
+  booking.introText ||
+  `Please select your appointment time below. This step becomes available once your ${currencySymbol}${consultationPrice} deposit has been paid.`;
+
+document.getElementById("subText").textContent =
+  booking.subText ||
+  "Your consultation includes a patch test and treatment assessment. This appointment must be completed before booking treatment sessions.";
+
+document.getElementById("openingHours").textContent = openingHoursText;
+</script>
+
+<script>
 (function() {
   const urlParams = new URLSearchParams(window.location.search);
-  const sessionId = urlParams.get('session_id');
+  const sessionId = urlParams.get("session_id");
 
   if (sessionId) {
-    localStorage.setItem("bareDepositGate", "allowed");
-    localStorage.setItem("bareDepositGateTs", String(Date.now()));
+    localStorage.setItem("templateDepositGate", "allowed");
+    localStorage.setItem("templateDepositGateTs", String(Date.now()));
   }
 
-  const allowed = localStorage.getItem("bareDepositGate");
-  const ts = Number(localStorage.getItem("bareDepositGateTs") || "0");
+  const allowed = localStorage.getItem("templateDepositGate");
+  const ts = Number(localStorage.getItem("templateDepositGateTs") || "0");
   const twelveHours = 12 * 60 * 60 * 1000;
 
   if (allowed !== "allowed" || !ts || (Date.now() - ts) > twelveHours) {
@@ -283,16 +331,16 @@ async function loadAvailableSlots(date) {
     }
 
     container.innerHTML = slots.map(slot => `
-  <button class="btn slot-btn ${slot === nextAvailable ? "next-slot" : ""}" type="button" onclick="selectSlot('${date}', '${slot}', this)">
-    ${slot === nextAvailable ? "Next available: " : ""}${slot}
-  </button>
-`).join("") + `
-  <div style="width:100%; margin-top:18px;">
-    <button id="confirm-booking-btn" class="btn" type="button" style="display:none;" onclick="confirmSelectedSlot()">
-      Confirm Appointment
-    </button>
-  </div>
-`;
+      <button class="btn slot-btn ${slot === nextAvailable ? "next-slot" : ""}" type="button" onclick="selectSlot('${date}', '${slot}', this)">
+        ${slot === nextAvailable ? "Next available: " : ""}${slot}
+      </button>
+    `).join("") + `
+      <div style="width:100%; margin-top:18px;">
+        <button id="confirm-booking-btn" class="btn" type="button" style="display:none;" onclick="confirmSelectedSlot()">
+          Confirm Appointment
+        </button>
+      </div>
+    `;
   } catch (err) {
     container.innerHTML = '<div class="slot-message">Could not load available times. Please try again.</div>';
   }
@@ -303,7 +351,7 @@ document.getElementById("booking-date").addEventListener("change", function(e) {
     loadAvailableSlots(e.target.value);
   }
 });
-  
+
 let selectedDate = "";
 let selectedTime = "";
 
@@ -328,49 +376,50 @@ function confirmSelectedSlot() {
   if (!selectedDate || !selectedTime) return;
   bookSlot(selectedDate, selectedTime);
 }
+
 async function bookSlot(date, time) {
   const status = document.getElementById("booking-status");
 
-  const name = localStorage.getItem("bare_customer_name") || "Client";
-  const email = localStorage.getItem("bare_customer_email") || "";
-  const phone = localStorage.getItem("bare_customer_phone") || "";
+  const name = localStorage.getItem("template_customer_name") || "Client";
+  const email = localStorage.getItem("template_customer_email") || "";
+  const phone = localStorage.getItem("template_customer_phone") || "";
 
   status.textContent = "Booking your appointment...";
   status.className = "";
 
   try {
-  const res = await fetch("/api", {
-    method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({
-      client_name: name,
-      email: email,
-      phone: phone,
-      appointment_date: date,
-      appointment_time: time,
-      booking_type: "consultation",
-      amount_paid: 30
-    })
-  });
+    const res = await fetch("/api", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        client_name: name,
+        email: email,
+        phone: phone,
+        appointment_date: date,
+        appointment_time: time,
+        booking_type: "consultation",
+        amount_paid: consultationPrice
+      })
+    });
 
-   if (res.ok) {
-  document.getElementById("available-slots").innerHTML = "";
+    if (res.ok) {
+      document.getElementById("available-slots").innerHTML = "";
 
-  status.innerHTML = `
-    <div style="background:#f4f5f3;border-radius:12px;padding:18px;margin-top:18px;">
-      <p class="success">Thank you — your consultation and patch test has been booked.</p>
-      <p><strong>Date:</strong> ${date}</p>
-      <p><strong>Time:</strong> ${time}</p>
-      <p>Please check your inbox and junk/spam folder for your confirmation email and manage booking link.</p>
-      <p style="font-size:13px;color:#878274;">Redirecting you back to the website...</p>
-    </div>
-  `;
-  status.className = "success";
+      status.innerHTML = `
+        <div style="background:#f4f5f3;border-radius:12px;padding:18px;margin-top:18px;">
+          <p class="success">Thank you — your appointment has been booked.</p>
+          <p><strong>Date:</strong> ${date}</p>
+          <p><strong>Time:</strong> ${time}</p>
+          <p>Please check your inbox and junk/spam folder for your confirmation email and manage booking link.</p>
+          <p style="font-size:13px;color:#878274;">Redirecting you back to the website...</p>
+        </div>
+      `;
+      status.className = "success";
 
-  setTimeout(() => {
-    window.location.href = "https://barebymarlese.com";
-  }, 5000);
-     
+      setTimeout(() => {
+        window.location.href = domain;
+      }, 5000);
+
     } else {
       status.textContent = "That slot has just been taken. Please choose another time.";
       status.className = "error";
