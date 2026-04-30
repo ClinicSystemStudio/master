@@ -8,15 +8,20 @@ window.CONFIG = {
 
   branding: {
     logo: "logo.png",
-    primaryColor: "#5e6959",
-    backgroundColor: "#cacdc6",
-    textColor: "#24221a"
+
+    primaryColor: "#1e3a5f",     
+    backgroundColor: "#f4f7fb",  
+    textColor: "#1a1a1a",
+
+    secondaryColor: "#4da3ff",
+    softBackground: "#e6f0ff"
+  },
+
+  booking: {
+    consultationPrice: 30,
+    currencySymbol: "£",
+    pageTitle: "Book Consultation & Patch Test",
+    activeStepText: "Step 3: Book Consultation & Patch Test",
+    openingHours: "Monday–Friday 5pm–8pm • Saturday 9am–11am"
   }
 };
-booking: {
-  consultationPrice: 30,
-  currencySymbol: "£",
-  pageTitle: "Book Consultation & Patch Test",
-  activeStepText: "Step 3: Book Consultation & Patch Test",
-  openingHours: "Monday–Friday 5pm–8pm • Saturday 9am–11am"
-}
