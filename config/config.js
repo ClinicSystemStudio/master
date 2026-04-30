@@ -13,3 +13,10 @@ window.CONFIG = {
     textColor: "#24221a"
   }
 };
+booking: {
+  consultationPrice: 30,
+  currencySymbol: "£",
+  pageTitle: "Book Consultation & Patch Test",
+  activeStepText: "Step 3: Book Consultation & Patch Test",
+  openingHours: "Monday–Friday 5pm–8pm • Saturday 9am–11am"
+}
