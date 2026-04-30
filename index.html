@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+<script src="./config/config.js"></script>
 <head>
   <meta charset="UTF-8">
   <title>Business Template</title>
@@ -9,18 +10,17 @@
   <h1 id="businessName"></h1>
   <p id="tagline"></p>
 
-  <script type="module">
-    import { CONFIG } from "./config/config.js";
+  <script>
+  const CONFIG = window.CONFIG;
 
-    document.getElementById("logo").src = CONFIG.branding.logo;
-    document.getElementById("businessName").textContent = CONFIG.business.name;
-    document.getElementById("tagline").textContent = CONFIG.business.tagline;
+  document.getElementById("logo").src = CONFIG.branding.logo;
+  document.getElementById("businessName").textContent = CONFIG.business.name;
+  document.getElementById("tagline").textContent = CONFIG.business.tagline;
 
-    document.documentElement.style.setProperty("--brand", CONFIG.branding.primaryColor);
-    document.documentElement.style.setProperty("--bg", CONFIG.branding.backgroundColor);
-    document.documentElement.style.setProperty("--text", CONFIG.branding.textColor);
-  </script>
-
+  document.documentElement.style.setProperty("--brand", CONFIG.branding.primaryColor);
+  document.documentElement.style.setProperty("--bg", CONFIG.branding.backgroundColor);
+  document.documentElement.style.setProperty("--text", CONFIG.branding.textColor);
+</script>
   <style>
     body {
       margin: 0;
