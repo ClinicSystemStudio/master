@@ -1,26 +1,28 @@
 <!doctype html>
 <html lang="en">
-<script src="./config/config.js"></script>
 <head>
   <meta charset="UTF-8">
   <title>Business Template</title>
+  <script src="./config/config.js"></script>
 </head>
+
 <body>
   <img id="logo" alt="Business logo" style="max-width:160px;">
   <h1 id="businessName"></h1>
   <p id="tagline"></p>
 
   <script>
-  const CONFIG = window.CONFIG;
+    const CONFIG = window.CONFIG;
 
-  document.getElementById("logo").src = CONFIG.branding.logo;
-  document.getElementById("businessName").textContent = CONFIG.business.name;
-  document.getElementById("tagline").textContent = CONFIG.business.tagline;
+    document.getElementById("logo").src = CONFIG.branding.logo;
+    document.getElementById("businessName").textContent = CONFIG.business.name;
+    document.getElementById("tagline").textContent = CONFIG.business.tagline;
 
-  document.documentElement.style.setProperty("--brand", CONFIG.branding.primaryColor);
-  document.documentElement.style.setProperty("--bg", CONFIG.branding.backgroundColor);
-  document.documentElement.style.setProperty("--text", CONFIG.branding.textColor);
-</script>
+    document.documentElement.style.setProperty("--brand", CONFIG.branding.primaryColor);
+    document.documentElement.style.setProperty("--bg", CONFIG.branding.backgroundColor);
+    document.documentElement.style.setProperty("--text", CONFIG.branding.textColor);
+  </script>
+
   <style>
     body {
       margin: 0;
