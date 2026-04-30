@@ -1,6 +1,6 @@
 export const CONFIG = {
   business: {
-    name: "Your Business Name",
+    name: "TEST SUCCESS"
     tagline: "Your tagline",
     email: "your@email.com",
     domain: "https://yourdomain.com"
