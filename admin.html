@@ -756,7 +756,7 @@ async function cancelBooking(id){
     return;
   }
 
-  const res = await fetch("/api?admin=cancel", {
+  const res = await fetch(`${CONFIG.apiBase}/api?admin=cancel`, {
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify({id})
@@ -771,7 +771,7 @@ async function cancelBooking(id){
 
 async function markReminderSent(id){
   try {
-    const res = await fetch("/api?admin=reminder-sent", {
+    const res = await fetch(`${CONFIG.apiBase}/api?admin=reminder-sent`, {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({ id })
@@ -794,7 +794,7 @@ async function useSession(id){
     return;
   }
 
-  const res = await fetch("/api?admin=use-session", {
+  const res = await fetch(`${CONFIG.apiBase}/api?admin=use-session`, {
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify({id})
@@ -821,7 +821,7 @@ async function markPaid(id){
     return;
   }
 
-  const res = await fetch("/api?admin=mark-paid", {
+  const res = await fetch(`${CONFIG.apiBase}/api?admin=mark-paid`, {
     method:"POST",
     headers:{"Content-Type":"application/json"},
     body:JSON.stringify({
