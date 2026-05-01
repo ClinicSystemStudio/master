@@ -1,1 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<title>Bookings Admin</title>
+
+<script src="./config/config.js"></script>
+
+<link rel="icon" type="image/png" href="/favicon.png">
+
+<!-- PWA START -->
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#1e3a5f">
+<link rel="apple-touch-icon" href="/assets/logo.png">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Bookings Admin">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- PWA END -->
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#f4f7fb;
+  --ink:#1a1a1a;
+  --brand:#1e3a5f;
+  --brand-dark:#162c47;
+  --accent:#4da3ff;
+  --soft:#e6f0ff;
+  --muted:#6b7a90;
+  --card:#ffffff;
+  --line:rgba(30,58,95,.14);
+  --danger:#b04a4a;
+  --success:#2f7d32;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+
+body{
+  font-family:'Montserrat', Arial, sans-serif;
+  background:
+    radial-gradient(circle at top, rgba(255,255,255,.75), transparent 32%),
+    linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+  color:var(--ink);
+  min-height:100vh;
+}
+
+.page{
+  min-height:100vh;
+  padding:28px 16px;
+}
+
+.shell{
+  width:100%;
+  max-width:1500px;
+  margin:0 auto;
+}
+
+.brand{
+  text-align:center;
+  margin:0 0 18px;
+  color:var(--brand);
+  letter-spacing:.12em;
+  font-size:13px;
+  text-transform:uppercase;
+  font-weight:700;
+}
+
+.logo{
+  display:none;
+  max-width:140px;
+  margin:0 auto 16px;
+}
+
+.card{
+  background:rgba(255,255,255,.92);
+  border:1px solid var(--line);
+  border-radius:28px;
+  box-shadow:0 18px 60px rgba(30,58,95,.12);
+  overflow:hidden;
+  backdrop-filter:blur(6px);
+}
+
+.hero{
+  position:relative;
+  padding:40px 28px 24px;
+  text-align:center;
+  background:linear-gradient(180deg, rgba(77,163,255,.12), rgba(77,163,255,0) 100%);
+  border-bottom:1px solid var(--line);
+}
+
+.qr-box{
+  position:absolute;
+  top:20px;
+  right:20px;
+  background:white;
+  padding:10px;
+  border-radius:14px;
+  box-shadow:0 10px 25px rgba(30,58,95,.10);
+  display:none;
+}
+
+.qr-box img{
+  width:120px;
+  display:block;
+}
+
+.kicker{
+  display:inline-block;
+  padding:8px 14px;
+  border-radius:999px;
+  background:var(--soft);
+  color:var(--brand);
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+h1{
+  margin:18px 0 10px;
+  font-size:clamp(28px,4vw,42px);
+  line-height:1.1;
+  font-weight:600;
+}
+
+.sub{
+  max-width:680px;
+  margin:0 auto;
+  font-size:15px;
+  line-height:1.7;
+  color:var(--muted);
+}
+
+.toolbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  padding:22px 26px;
+  border-bottom:1px solid var(--line);
+  flex-wrap:wrap;
+}
+
+.summary-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:10px 14px;
+  border-radius:999px;
+  background:var(--soft);
+  color:var(--brand-dark);
+  font-size:13px;
+  font-weight:600;
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  appearance:none;
+  border:0;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  padding:12px 16px;
+  border-radius:14px;
+  text-decoration:none;
+  font-family:inherit;
+  font-weight:600;
+  font-size:14px;
+  transition:transform .18s ease, opacity .18s ease, background .18s ease;
+}
+
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:var(--brand);color:#fff}
+
+.btn-secondary{
+  background:var(--soft);
+  color:var(--brand-dark);
+  border:1px solid var(--line);
+  min-height:30px;
+  padding:6px 10px;
+  border-radius:8px;
+  font-size:12px;
+}
+
+.btn-cancel{
+  background:var(--danger);
+  color:#fff;
+  min-height:30px;
+  padding:6px 10px;
+  border-radius:8px;
+  font-size:12px;
+}
+
+.btn-whatsapp{
+  background:var(--brand);
+  color:#fff;
+  min-height:30px;
+  padding:6px 10px;
+  border-radius:8px;
+  font-size:12px;
+  margin-bottom:4px;
+}
+
+.btn-whatsapp.ready{
+  background:#25D366;
+  color:#fff;
+}
+
+.btn-whatsapp[aria-disabled="true"]{
+  opacity:.45;
+  cursor:not-allowed;
+  pointer-events:none;
+  background:var(--soft);
+  color:var(--muted);
+  border:1px solid var(--line);
+}
+
+.action-stack{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:6px;
+}
+
+.action-note{
+  display:block;
+  font-size:11px;
+  line-height:1.4;
+  color:var(--muted);
+  text-align:center;
+  margin-top:4px;
+}
+
+.content{
+  padding:26px;
+}
+
+.table-wrap{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:22px;
+  overflow:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+  min-width:1250px;
+}
+
+th,td{
+  padding:13px 11px;
+  border-bottom:1px solid var(--line);
+  text-align:left;
+  vertical-align:top;
+}
+
+td:nth-child(6){
+  text-align:center;
+}
+
+th{
+  color:var(--brand);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.10em;
+  font-weight:700;
+  background:#f8fbff;
+}
+
+tbody tr:hover{background:rgba(77,163,255,.06)}
+tbody tr:last-child td{border-bottom:0}
+
+.client-name{font-weight:700;color:var(--ink)}
+.contact{line-height:1.55;color:var(--muted)}
+.date-time{font-weight:600;color:var(--ink)}
+
+.status{
+  display:inline-block;
+  padding:7px 11px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  background:var(--soft);
+  color:var(--brand-dark);
+  text-transform:capitalize;
+}
+
+.status.cancelled{
+  background:#fff0f0;
+  color:var(--danger);
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:110px;
+  height:30px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.badge.paid{
+  background:rgba(47,125,50,.12);
+  color:var(--success);
+}
+
+.badge.deposit{
+  background:var(--soft);
+  color:var(--brand-dark);
+}
+
+.badge.unpaid{
+  background:#fff0f0;
+  color:var(--danger);
+}
+
+.package-text{
+  font-size:13px;
+  line-height:1.45;
+  color:var(--muted);
+  font-weight:600;
+}
+
+.message{
+  text-align:center;
+  margin:0;
+  padding:26px 18px;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.6;
+}
+
+footer{
+  text-align:center;
+  padding:18px 10px 0;
+  color:var(--muted);
+  font-size:12px;
+}
+
+@media(max-width:820px){
+  .page{padding:22px 12px}
+  .hero{padding:34px 20px 22px}
+  .qr-box{position:static;margin:18px auto 0;width:max-content}
+  .toolbar,.content{padding:18px}
+  .actions{width:100%}
+  .btn{width:100%}
+  .summary-pill{width:100%;justify-content:center;border-radius:14px;text-align:center}
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+  <div class="shell">
+    <img id="businessLogo" class="logo" alt="Business logo">
+    <div class="brand" id="brandName">Your Business</div>
+
+    <div class="card">
+      <div class="hero">
+        <span class="kicker" id="adminKicker">Private Admin</span>
+        <h1 id="adminTitle">Bookings Dashboard</h1>
+        <p class="sub" id="adminIntro">View bookings, client contact details, send manual WhatsApp reminders, and cancel bookings when needed.</p>
+
+        <div class="qr-box" id="qrBox">
+          <img id="qrImage" src="" alt="QR Code">
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="summary-pill" id="summary-pill">Loading bookings...</div>
+        <div class="actions">
+          <button class="btn btn-secondary" type="button" onclick="loadBookings()">Refresh</button>
+          <a class="btn btn-primary" id="openBookingBtn" href="/booking.html?session_id=test">Open Booking Page</a>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="table-wrap">
+          <div id="message" class="message">Loading bookings...</div>
+
+          <table id="bookings-table" style="display:none;">
+            <thead>
+              <tr>
+                <th>Client</th>
+                <th>Contact</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Type</th>
+                <th>Payment</th>
+                <th>Package</th>
+                <th>Sessions</th>
+                <th>Status</th>
+                <th>Aftercare</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="bookings-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <footer id="footerText">© Your Business | Booking administration</footer>
+  </div>
+</div>
+
+<script>
+const CONFIG = window.CONFIG || {};
+const business = CONFIG.business || {};
+const branding = CONFIG.branding || {};
+const admin = CONFIG.admin || {};
+const bookingConfig = CONFIG.booking || {};
+
+const businessName = business.name || "Your Business";
+const businessDomain = business.domain || window.location.origin;
+const logo = branding.logo || "";
+const qrCode = business.qrCode || admin.qrCode || "";
+
+const currencySymbol = bookingConfig.currencySymbol || CONFIG.payment?.currencySymbol || "£";
+
+document.title = `Bookings Admin | ${businessName}`;
+
+document.documentElement.style.setProperty("--brand", branding.primaryColor || "#1e3a5f");
+document.documentElement.style.setProperty("--brand-dark", branding.brandDark || branding.primaryDark || "#162c47");
+document.documentElement.style.setProperty("--bg", branding.backgroundColor || "#f4f7fb");
+document.documentElement.style.setProperty("--ink", branding.textColor || "#1a1a1a");
+document.documentElement.style.setProperty("--soft", branding.softBackground || "#e6f0ff");
+document.documentElement.style.setProperty("--muted", branding.mutedColor || "#6b7a90");
+
+function setText(id, value){
+  const el = document.getElementById(id);
+  if (el) el.textContent = value;
+}
+
+setText("brandName", businessName);
+setText("adminKicker", admin.kicker || "Private Admin");
+setText("adminTitle", admin.title || "Bookings Dashboard");
+setText("adminIntro", admin.intro || "View bookings, client contact details, send manual WhatsApp reminders, and cancel bookings when needed.");
+setText("footerText", `© ${businessName} | Booking administration`);
+
+const logoEl = document.getElementById("businessLogo");
+if (logo) {
+  logoEl.src = logo;
+  logoEl.style.display = "block";
+}
+
+const qrBox = document.getElementById("qrBox");
+const qrImage = document.getElementById("qrImage");
+if (qrCode) {
+  qrImage.src = qrCode;
+  qrBox.style.display = "block";
+}
+
+document.getElementById("openBookingBtn").href = `${businessDomain}/booking.html?session_id=test`;
+
+function escapeHtml(value){
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function toLocalDateString(date){
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function getWhenText(date, time){
+  const now = new Date();
+  const appt = new Date(`${date}T${time}:00`);
+  const diffHours = (appt - now) / (1000 * 60 * 60);
+
+  const today = toLocalDateString(now);
+
+  const tomorrow = new Date(now);
+  tomorrow.setDate(now.getDate() + 1);
+  const tomorrowStr = toLocalDateString(tomorrow);
+
+  if (date === today) {
+    return diffHours < 6 ? "later today" : "today";
+  }
+
+  if (date === tomorrowStr) {
+    return "tomorrow";
+  }
+
+  return `on ${date}`;
+}
+
+function formatWhatsAppPhone(phone){
+  let cleaned = String(phone || "").trim().replace(/[\s().-]/g, "");
+
+  if (!cleaned) return "";
+
+  if (cleaned.startsWith("00")) cleaned = cleaned.slice(2);
+  if (cleaned.startsWith("+")) cleaned = cleaned.slice(1);
+  if (cleaned.startsWith("07")) cleaned = "44" + cleaned.slice(1);
+
+  return cleaned.replace(/[^0-9]/g, "");
+}
+
+function getAppointmentDateTime(booking){
+  if (!booking.appointment_date || !booking.appointment_time) return null;
+  const dateTime = new Date(`${booking.appointment_date}T${booking.appointment_time}:00`);
+  return Number.isNaN(dateTime.getTime()) ? null : dateTime;
+}
+
+function isWhatsAppReminderWindow(booking){
+  const appointment = getAppointmentDateTime(booking);
+  if (!appointment) return false;
+
+  const now = new Date();
+  const hoursUntil = (appointment.getTime() - now.getTime()) / (1000 * 60 * 60);
+
+  return hoursUntil > 0 && hoursUntil <= 24;
+}
+
+function buildWhatsAppMessage(booking){
+  const name = booking.client_name || "there";
+  const when = getWhenText(booking.appointment_date, booking.appointment_time);
+  const type = booking.booking_type === "treatment"
+    ? "treatment appointment"
+    : "consultation & patch test";
+
+  const manageLink = booking.reschedule_token
+    ? `${businessDomain}/reschedule.html?id=${booking.id}&token=${booking.reschedule_token}`
+    : businessDomain;
+
+  return `Hi ${name},
+
+Just a gentle reminder that your ${type} with ${businessName} is ${when}.
+
+Date: ${booking.appointment_date}
+Time: ${booking.appointment_time}
+
+Manage your booking using the link below.
+
+Please note a minimum of 24 hours’ notice is required for your deposit to remain transferable.
+
+${manageLink}
+
+Kind regards,
+${businessName}`;
+}
+
+function buildWhatsAppAction(booking){
+  const isConfirmed = booking.status === "confirmed";
+  const phone = formatWhatsAppPhone(booking.phone);
+  const isDue = isWhatsAppReminderWindow(booking);
+  const isSent = booking.whatsapp_reminder_sent === "yes";
+
+  if (!isConfirmed) {
+    return `<span class="action-note">WhatsApp unavailable</span>`;
+  }
+
+  if (!phone) {
+    return `<span class="action-note">No phone number</span>`;
+  }
+
+  if (isSent) {
+    return `<span class="btn btn-whatsapp" aria-disabled="true">Reminder sent</span>`;
+  }
+
+  if (!isDue) {
+    return `<span class="action-note">Available 24h before</span>`;
+  }
+
+  const message = encodeURIComponent(buildWhatsAppMessage(booking));
+
+  return `
+    <a class="btn btn-whatsapp ready"
+       href="https://wa.me/${phone}?text=${message}"
+       target="_blank"
+       rel="noopener"
+       onclick="markReminderSent(${booking.id})">
+      Send WhatsApp
+    </a>
+  `;
+}
+
+function buildAftercareStatus(booking){
+  if (booking.booking_type !== "treatment") {
+    return `<span class="action-note">—</span>`;
+  }
+
+  if (booking.aftercare_sent === "yes") {
+    return `<span style="color:var(--success);font-weight:700;">✓ Sent</span>`;
+  }
+
+  return `<span style="color:var(--danger);font-weight:700;">✕ Not sent</span>`;
+}
+
+function buildPaymentBadge(booking){
+  const status = booking.payment_status || "unpaid";
+  const amount = Number(booking.amount_paid || 0);
+  const amountText = amount > 0
+    ? `<br><span class="action-note payment-amount">${currencySymbol}${amount}</span>`
+    : "";
+
+  if (status === "paid") {
+    return `<span class="badge paid">Paid</span>${amountText}`;
+  }
+
+  if (status === "deposit_paid") {
+    return `<span class="badge deposit">Deposit paid</span>${amountText}`;
+  }
+
+  return `<span class="badge unpaid">Unpaid</span>${amountText}`;
+}
+
+function formatPackageType(packageType){
+  if (!packageType) return "—";
+  return String(packageType).replaceAll("_", " ").replace(/\b\w/g, c => c.toUpperCase());
+}
+
+function formatTattooSize(size){
+  if (!size) return "";
+  if (size === "xl") return "XL";
+  return `${String(size).charAt(0).toUpperCase() + String(size).slice(1)}`;
+}
+
+function buildPackageInfo(booking){
+  if (booking.booking_type !== "treatment") {
+    return `<span class="action-note">—</span>`;
+  }
+
+  return `
+    <div class="package-text">
+      ${escapeHtml(formatPackageType(booking.package_type))}
+      ${booking.tattoo_size ? `<br>${escapeHtml(formatTattooSize(booking.tattoo_size))}` : ""}
+      <br>
+      <span class="action-note">${escapeHtml(booking.package_status || "none")}</span>
+    </div>
+  `;
+}
+
+function buildSessionInfo(booking){
+  if (booking.booking_type !== "treatment") {
+    return `<span class="action-note">—</span>`;
+  }
+
+  const used = Number(booking.sessions_used || 0);
+  const total = Number(booking.sessions_total || 0);
+
+  return `<span class="package-text">${used}/${total} used</span>`;
+}
+
+async function loadBookings(){
+  const message = document.getElementById("message");
+  const table = document.getElementById("bookings-table");
+  const body = document.getElementById("bookings-body");
+  const summary = document.getElementById("summary-pill");
+
+  message.style.display = "block";
+  message.textContent = "Loading bookings...";
+  summary.textContent = "Loading bookings...";
+  table.style.display = "none";
+  body.innerHTML = "";
+
+  try{
+    const res = await fetch("/api?admin=bookings");
+
+    if (!res.ok) {
+      throw new Error("Could not load bookings");
+    }
+
+    const bookings = await res.json();
+
+    if(!bookings.length){
+      message.textContent = "No bookings found.";
+      summary.textContent = "0 bookings";
+      return;
+    }
+
+    const activeCount = bookings.filter(booking => booking.status !== "cancelled").length;
+    const cancelledCount = bookings.filter(booking => booking.status === "cancelled").length;
+    summary.textContent = `${activeCount} active booking${activeCount === 1 ? "" : "s"} • ${cancelledCount} cancelled`;
+
+    bookings.forEach(booking => {
+      const isCancelled = booking.status === "cancelled";
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
+        <td><div class="client-name">${escapeHtml(booking.client_name || "Client")}</div></td>
+        <td class="contact">
+          ${escapeHtml(booking.email || "No email")}<br>
+          ${escapeHtml(booking.phone || "No phone")}
+        </td>
+        <td class="date-time">${escapeHtml(booking.appointment_date)}</td>
+        <td class="date-time">${escapeHtml(booking.appointment_time)}</td>
+        <td>${escapeHtml(booking.booking_type || "consultation")}</td>
+        <td>${buildPaymentBadge(booking)}</td>
+        <td>${buildPackageInfo(booking)}</td>
+        <td>${buildSessionInfo(booking)}</td>
+        <td><span class="status ${isCancelled ? "cancelled" : ""}">${escapeHtml(booking.status || "confirmed")}</span></td>
+        <td>${buildAftercareStatus(booking)}</td>
+        <td>
+          <div class="action-stack">
+            ${buildWhatsAppAction(booking)}
+
+            ${booking.booking_type === "treatment" && !isCancelled && booking.package_status !== "completed"
+              ? `<button class="btn btn-secondary" onclick="useSession(${Number(booking.id)})">Use Session</button>`
+              : ""}
+
+            ${booking.booking_type === "treatment" && booking.package_status === "completed"
+              ? `<span class="action-note">Package completed</span>`
+              : ""}
+
+            ${booking.payment_status !== "paid" && !isCancelled
+              ? `<button class="btn btn-secondary" onclick="markPaid(${Number(booking.id)})">Mark Paid</button>`
+              : ""}
+
+            ${isCancelled
+              ? "—"
+              : `<button class="btn btn-cancel" onclick="cancelBooking(${Number(booking.id)})">Cancel</button>`}
+          </div>
+        </td>
+      `;
+
+      body.appendChild(row);
+    });
+
+    message.textContent = "";
+    message.style.display = "none";
+    table.style.display = "table";
+
+  }catch(err){
+    message.style.display = "block";
+    message.textContent = "Could not load bookings.";
+    summary.textContent = "Unable to load";
+  }
+}
+
+async function cancelBooking(id){
+  if(!confirm("Cancel this booking? The slot will become available again.")){
+    return;
+  }
+
+  const res = await fetch("/api?admin=cancel", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({id})
+  });
+
+  if(res.ok){
+    loadBookings();
+  }else{
+    alert("Could not cancel booking.");
+  }
+}
+
+async function markReminderSent(id){
+  try {
+    const res = await fetch("/api?admin=reminder-sent", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ id })
+    });
+
+    if (!res.ok) {
+      console.error("Failed to mark reminder sent");
+      return;
+    }
+
+    setTimeout(loadBookings, 500);
+
+  } catch (e) {
+    console.error("Failed to mark reminder sent");
+  }
+}
+
+async function useSession(id){
+  if(!confirm("Mark one session as used?")){
+    return;
+  }
+
+  const res = await fetch("/api?admin=use-session", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({id})
+  });
+
+  if(res.ok){
+    loadBookings();
+  }else{
+    alert("Could not update session.");
+  }
+}
+
+async function markPaid(id){
+  const amount = prompt("Amount paid? Enter pounds only, e.g. 30 or 300");
+
+  if(amount === null){
+    return;
+  }
+
+  const amountPaid = Number(amount);
+
+  if(Number.isNaN(amountPaid) || amountPaid < 0){
+    alert("Please enter a valid amount.");
+    return;
+  }
+
+  const res = await fetch("/api?admin=mark-paid", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      id,
+      amount_paid: amountPaid
+    })
+  });
+
+  if(res.ok){
+    loadBookings();
+  }else{
+    alert("Could not mark payment as paid.");
+  }
+}
+
+loadBookings();
+</script>
+</body>
+</html>
