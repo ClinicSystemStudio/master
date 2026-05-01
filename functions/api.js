@@ -102,9 +102,13 @@ export async function onRequest(context) {
 </div>`;
   }
 
-  async function sendEmail({ to, subject, html }) {
-    if (!env.RESEND_API_KEY || !FROM_EMAIL || !to) return;
+async function sendEmail({ to, subject, html }) {
+  if (!env.RESEND_API_KEY || !FROM_EMAIL || !to) {
+    console.warn("Email not sent - missing config", { to, subject });
+    return;
+  }
 
+  try {
     await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -119,7 +123,10 @@ export async function onRequest(context) {
         html
       })
     });
+  } catch (err) {
+    console.error("Email send failed", err);
   }
+}
 
   async function sendErrorAlert(title, details) {
     try {
