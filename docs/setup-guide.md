@@ -97,3 +97,42 @@ Clients can:
 ## Support
 
 This is a self-hosted system. No ongoing fees.
+
+
+
+# HOW THIS SYSTEM GETS YOU MORE CLIENTS
+
+## 1. Deposit-first booking
+
+Clients must pay before booking
+→ Reduces time wasters
+→ Protects your calendar
+
+---
+
+## 2. Structured client flow
+
+Consultation → Payment → Booking → Treatment
+→ Creates a premium experience
+→ Increases trust
+
+---
+
+## 3. Automated follow-up
+
+Aftercare emails improve:
+
+* Client satisfaction
+* Repeat bookings
+* Reviews
+
+---
+
+## 4. Full control
+
+No platforms
+No subscriptions
+No restrictions
+
+You own your system.
+
