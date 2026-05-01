@@ -24,7 +24,7 @@ window.CONFIG = {
   payment: {
     depositAmount: 30,
     currencySymbol: "£",
-    depositPaymentLink: "https://your-stripe-payment-link.com",
+    depositPaymentLink: "booking.html?session_id=test",
     bookingPage: "booking.html"
   }
 };
