@@ -291,6 +291,7 @@ const businessName = business.name || "Your Business";
 const businessDomain = business.domain || window.location.origin;
 const businessEmail = business.email || "";
 const logo = branding.logo || "";
+  const API_BASE = CONFIG.apiBase || "https://master-aji.pages.dev";
 
 document.title = `${cancelConfig.pageTitle || "Cancel Appointment"} | ${businessName}`;
 
@@ -376,7 +377,7 @@ async function loadBooking(){
   }
 
   try{
-    const res = await fetch(`/api?cancel=booking&id=${encodeURIComponent(bookingId)}&token=${encodeURIComponent(token)}`);
+    const res = await fetch(`${API_BASE}/api?cancel=booking&id=${encodeURIComponent(bookingId)}&token=${encodeURIComponent(token)}`)
 
     if(!res.ok){
       summary.innerHTML = "<p>This cancellation link is invalid or has expired.</p>";
@@ -436,7 +437,7 @@ async function confirmCancellation(){
   showStatus("Cancelling your appointment...", "info");
 
   try{
-    const res = await fetch("/api?cancel=confirm", {
+    const res = await fetch(`${API_BASE}/api?cancel=confirm`, {
       method:"POST",
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({
