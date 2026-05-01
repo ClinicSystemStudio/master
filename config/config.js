@@ -1,5 +1,5 @@
 window.CONFIG = {
-  apiBase: "https://master-aji.pages.dev",
+  apiBase: "",
 
   business: {
     name: "TEST SUCCESS",
