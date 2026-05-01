@@ -3,7 +3,7 @@ window.CONFIG = {
     name: "TEST SUCCESS",
     tagline: "Your tagline",
     email: "your@email.com",
-    domain: "https://yourdomain.com"
+    domain: window.location.origin
   },
 
   branding: {
