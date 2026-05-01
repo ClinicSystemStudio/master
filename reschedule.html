@@ -489,8 +489,11 @@ function selectSlot(date, time, button){
   button.style.outline = "3px solid rgba(77,163,255,.35)";
 
   const confirmBtn = document.getElementById("confirm-reschedule-btn");
-  confirmBtn.style.display = "inline-flex";
-  confirmBtn.textContent = `Confirm ${time}`;
+
+  if (confirmBtn) {
+    confirmBtn.style.display = "inline-flex";
+    confirmBtn.textContent = `Confirm ${time}`;
+  }
 }
 
 async function confirmReschedule(){
