@@ -2,7 +2,23 @@ export async function onRequest(context) {
   const { request, env } = context;
   const url = new URL(request.url);
 
-  const jsonHeaders = { "Content-Type": "application/json" };
+  const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type"
+};
+
+const jsonHeaders = {
+  "Content-Type": "application/json",
+  ...corsHeaders
+};
+
+if (request.method === "OPTIONS") {
+  return new Response(null, {
+    status: 204,
+    headers: corsHeaders
+  });
+}
 
   const BUSINESS_NAME = env.BUSINESS_NAME || "Your Business";
   const BUSINESS_DOMAIN = env.BUSINESS_DOMAIN || "https://example.com";
