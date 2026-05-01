@@ -48,28 +48,11 @@ body{
   min-height:100vh;
 }
 
-.page{
-  min-height:100vh;
-  padding:28px 16px;
-}
+.page{min-height:100vh;padding:28px 16px}
+.shell{width:100%;max-width:900px;margin:0 auto}
 
-.shell{
-  width:100%;
-  max-width:900px;
-  margin:0 auto;
-}
-
-.logo-wrap{
-  text-align:center;
-  margin:0 0 18px;
-}
-
-.logo-wrap img{
-  max-width:160px;
-  height:auto;
-  display:none;
-  margin:0 auto;
-}
+.logo-wrap{text-align:center;margin:0 0 18px}
+.logo-wrap img{max-width:160px;height:auto;display:none;margin:0 auto}
 
 .brand{
   text-align:center;
@@ -124,8 +107,37 @@ h1{
   color:var(--muted);
 }
 
-.content{
-  padding:26px;
+.content{padding:26px}
+
+.status-box{
+  display:none;
+  max-width:640px;
+  margin:0 auto 20px;
+  padding:14px 16px;
+  border-radius:16px;
+  font-size:14px;
+  line-height:1.6;
+  border:1px solid var(--line);
+}
+
+.status-box.info{
+  display:block;
+  background:var(--soft);
+  color:var(--brand);
+}
+
+.status-box.success{
+  display:block;
+  background:#edf8f0;
+  color:var(--success);
+  border-color:rgba(47,125,50,.18);
+}
+
+.status-box.error{
+  display:block;
+  background:#fff0f0;
+  color:var(--danger);
+  border-color:rgba(176,74,74,.18);
 }
 
 .summary{
@@ -139,15 +151,8 @@ h1{
   box-shadow:0 8px 24px rgba(30,58,95,.05);
 }
 
-.summary p{
-  margin:8px 0;
-  font-size:14px;
-  line-height:1.55;
-}
-
-.summary strong{
-  color:var(--brand);
-}
+.summary p{margin:8px 0;font-size:14px;line-height:1.55}
+.summary strong{color:var(--brand)}
 
 .form-panel{
   background:#f8fbff;
@@ -155,6 +160,11 @@ h1{
   border-radius:22px;
   padding:22px;
   text-align:center;
+}
+
+.form-panel.disabled{
+  opacity:.55;
+  pointer-events:none;
 }
 
 label{
@@ -217,15 +227,8 @@ input:focus{
   transition:transform .18s ease, opacity .18s ease, background .18s ease;
 }
 
-.btn:hover{
-  transform:translateY(-1px);
-  opacity:.95;
-}
-
-.btn-primary{
-  background:var(--brand);
-  color:#fff;
-}
+.btn:hover{transform:translateY(-1px);opacity:.95}
+.btn-primary{background:var(--brand);color:#fff}
 
 .slot-btn{
   margin:5px;
@@ -239,21 +242,9 @@ input:focus{
   background:var(--brand-dark);
 }
 
-#status{
-  margin-top:20px;
-  font-size:14px;
-  line-height:1.6;
-}
-
-.success{
-  color:var(--success);
-  font-weight:600;
-}
-
-.error{
-  color:var(--danger);
-  font-weight:600;
-}
+#status{margin-top:20px;font-size:14px;line-height:1.6}
+.success{color:var(--success);font-weight:600}
+.error{color:var(--danger);font-weight:600}
 
 .success-card{
   background:white;
@@ -302,16 +293,18 @@ footer{
       </div>
 
       <div class="content">
+        <div id="statusBox" class="status-box info">Checking your booking link...</div>
+
         <div id="booking-summary" class="summary">
           <p>Loading appointment details...</p>
         </div>
 
-        <div class="form-panel">
+        <div class="form-panel" id="formPanel">
           <label for="booking-date">Choose a new date</label>
-          <input type="date" id="booking-date">
+          <input type="date" id="booking-date" disabled>
 
           <div id="available-slots">
-            <div class="slot-message">Please choose a date to view available times.</div>
+            <div class="slot-message">Please wait while we check your booking link.</div>
           </div>
 
           <p id="status"></p>
@@ -367,6 +360,7 @@ const token = params.get("token");
 let selectedDate = "";
 let selectedTime = "";
 let bookingType = "consultation";
+let validSession = false;
 
 function escapeHtml(value){
   return String(value || "")
@@ -383,6 +377,37 @@ function supportText(){
     : `Please contact ${businessName} if you need help changing your appointment.`;
 }
 
+function showStatus(message, type = "info"){
+  const box = document.getElementById("statusBox");
+  box.className = `status-box ${type}`;
+  box.textContent = message;
+}
+
+function disableBookingUI(message = "This booking cannot be changed online."){
+  validSession = false;
+  const formPanel = document.getElementById("formPanel");
+  const dateInput = document.getElementById("booking-date");
+  const container = document.getElementById("available-slots");
+
+  formPanel.classList.add("disabled");
+  dateInput.disabled = true;
+  container.innerHTML = `<div class="slot-message">${escapeHtml(message)}</div>`;
+
+  const confirmBtn = document.getElementById("confirm-reschedule-btn");
+  if (confirmBtn) confirmBtn.style.display = "none";
+}
+
+function enableBookingUI(){
+  validSession = true;
+  const formPanel = document.getElementById("formPanel");
+  const dateInput = document.getElementById("booking-date");
+  const container = document.getElementById("available-slots");
+
+  formPanel.classList.remove("disabled");
+  dateInput.disabled = false;
+  container.innerHTML = '<div class="slot-message">Please choose a date to view available times.</div>';
+}
+
 function setMinDate(){
   const dateInput = document.getElementById("booking-date");
   const today = new Date();
@@ -394,12 +419,11 @@ function setMinDate(){
 
 async function loadBooking(){
   const summary = document.getElementById("booking-summary");
-  const status = document.getElementById("status");
 
   if(!bookingId || !token){
-    summary.innerHTML = "<p>Invalid reschedule link.</p>";
-    status.textContent = supportText();
-    status.className = "error";
+    summary.innerHTML = "<p>We could not find the booking details from this link.</p>";
+    showStatus("This booking link is invalid or incomplete.", "error");
+    disableBookingUI(supportText());
     return;
   }
 
@@ -408,8 +432,8 @@ async function loadBooking(){
 
     if(!res.ok){
       summary.innerHTML = "<p>This reschedule link is invalid or has expired.</p>";
-      status.textContent = supportText();
-      status.className = "error";
+      showStatus("This booking link is no longer valid.", "error");
+      disableBookingUI(supportText());
       return;
     }
 
@@ -425,21 +449,29 @@ async function loadBooking(){
     `;
 
     if(booking.status !== "confirmed"){
-      status.textContent = "This appointment can no longer be rescheduled.";
-      status.className = "error";
-      document.getElementById("booking-date").disabled = true;
+      showStatus("This appointment can no longer be rescheduled online.", "error");
+      disableBookingUI(supportText());
+      return;
     }
+
+    showStatus("Booking loaded. Please choose a new date and time below.", "success");
+    enableBookingUI();
 
   }catch(err){
     summary.innerHTML = "<p>Could not load appointment details.</p>";
-    status.textContent = supportText();
-    status.className = "error";
+    showStatus("We could not load this booking link.", "error");
+    disableBookingUI(supportText());
   }
 }
 
 async function loadAvailableSlots(date){
   const container = document.getElementById("available-slots");
   const status = document.getElementById("status");
+
+  if (!validSession) {
+    showStatus("This booking link is invalid or incomplete.", "error");
+    return;
+  }
 
   selectedDate = "";
   selectedTime = "";
@@ -477,6 +509,11 @@ async function loadAvailableSlots(date){
 }
 
 function selectSlot(date, time, button){
+  if (!validSession) {
+    showStatus("This booking link is invalid or incomplete.", "error");
+    return;
+  }
+
   selectedDate = date;
   selectedTime = time;
 
@@ -499,12 +536,19 @@ function selectSlot(date, time, button){
 async function confirmReschedule(){
   const status = document.getElementById("status");
 
+  if(!validSession){
+    showStatus("This booking link is invalid or incomplete.", "error");
+    return;
+  }
+
   if(!selectedDate || !selectedTime){
+    showStatus("Please select a time before confirming.", "error");
     return;
   }
 
   status.textContent = "Updating your appointment...";
   status.className = "";
+  showStatus("Updating your appointment...", "info");
 
   try{
     const res = await fetch("/api?reschedule=update", {
@@ -519,6 +563,8 @@ async function confirmReschedule(){
     });
 
     if(res.ok){
+      showStatus("Your appointment has been successfully updated.", "success");
+
       status.innerHTML = `
         <div class="success-card">
           <p class="success">Your appointment has been updated.</p>
@@ -539,11 +585,13 @@ async function confirmReschedule(){
 
     }else{
       const text = await res.text();
+      showStatus(text || "Could not reschedule. Please try another time.", "error");
       status.textContent = text || "Could not reschedule. Please try another time.";
       status.className = "error";
     }
 
   }catch(err){
+    showStatus("There was a problem updating your appointment. Please try again.", "error");
     status.textContent = "There was a problem updating your appointment. Please try again.";
     status.className = "error";
   }
