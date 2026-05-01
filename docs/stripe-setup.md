@@ -18,3 +18,15 @@ https://yourdomain.com/booking.html?session_id={CHECKOUT_SESSION_ID}
 For testing on Cloudflare Pages:
 
 https://your-project.pages.dev/booking.html?session_id={CHECKOUT_SESSION_ID}
+
+In Stripe, make sure you set:
+
+After payment → Redirect URL
+
+To:
+
+https://yourdomain.com/booking.html?session_id={CHECKOUT_SESSION_ID}
+
+Or for your test site:
+
+https://master-aji.pages.dev/booking.html?session_id={CHECKOUT_SESSION_ID}
