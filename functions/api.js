@@ -693,7 +693,7 @@ export async function onRequest(context) {
             <p><strong>Payment Status:</strong> ${safePaymentStatus}</p>
             ${bookingType === "treatment" ? `<p><strong>Package Status:</strong> ${safePackageStatus}</p><p><strong>Sessions Used:</strong> ${safeSessions}</p>` : ""}
           </div>
-          <p>This appointment has been saved in your Cloudflare D1 booking database.</p>
+          <p>This appointment has been successfully saved in your system.</p>
         `)
       });
 
