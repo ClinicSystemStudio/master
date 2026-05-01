@@ -8,13 +8,9 @@ window.CONFIG = {
 
   branding: {
     logo: "logo.png",
-
-    primaryColor: "#1e3a5f",     
-    backgroundColor: "#f4f7fb",  
-    textColor: "#1a1a1a",
-
-    secondaryColor: "#4da3ff",
-    softBackground: "#e6f0ff"
+    primaryColor: "#1e3a5f",
+    backgroundColor: "#eaf2fb",
+    textColor: "#1a1a1a"
   },
 
   booking: {
@@ -23,5 +19,12 @@ window.CONFIG = {
     pageTitle: "Book Consultation & Patch Test",
     activeStepText: "Step 3: Book Consultation & Patch Test",
     openingHours: "Monday–Friday 5pm–8pm • Saturday 9am–11am"
+  },
+
+  payment: {
+    depositAmount: 30,
+    currencySymbol: "£",
+    depositPaymentLink: "https://your-stripe-payment-link.com",
+    bookingPage: "booking.html"
   }
 };
