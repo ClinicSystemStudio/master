@@ -678,7 +678,7 @@ async function loadBookings(){
   body.innerHTML = "";
 
   try{
-    const res = await fetch("/api?admin=bookings");
+    const res = await fetch(`${CONFIG.apiBase}/api?admin=bookings`)
 
     if (!res.ok) {
       throw new Error("Could not load bookings");
