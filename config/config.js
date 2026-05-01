@@ -1,9 +1,11 @@
 window.CONFIG = {
+  apiBase: "https://master-aji.pages.dev",
+
   business: {
     name: "TEST SUCCESS",
     tagline: "Your tagline",
     email: "your@email.com",
-    domain: window.location.origin
+    domain: "https://clinicsystemstudio.github.io/master"
   },
 
   branding: {
