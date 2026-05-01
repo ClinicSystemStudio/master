@@ -6,7 +6,7 @@ export async function onRequest(context) {
 
   const BUSINESS_NAME = env.BUSINESS_NAME || "Your Business";
   const BUSINESS_DOMAIN = env.BUSINESS_DOMAIN || "https://example.com";
-  const ADMIN_EMAIL = env.ADMIN_EMAIL || env.TO_EMAIL;
+  const ADMIN_EMAIL = env.ADMIN_EMAIL || env.TO_EMAIL || env.FROM_EMAIL;
   const FROM_EMAIL = env.FROM_EMAIL;
   const REPLY_TO_EMAIL = env.REPLY_TO_EMAIL || ADMIN_EMAIL;
 
