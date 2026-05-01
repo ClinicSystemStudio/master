@@ -168,6 +168,53 @@ h1{
   line-height:1.6;
 }
 
+.customer-form{
+  display:grid;
+  gap:12px;
+  margin-top:20px;
+}
+
+.customer-form label{
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:var(--brand);
+  margin-bottom:6px;
+}
+
+.customer-form input{
+  width:100%;
+  border:1px solid var(--line);
+  background:#f8fbff;
+  border-radius:12px;
+  padding:13px 14px;
+  font:inherit;
+  color:var(--ink);
+  outline:none;
+}
+
+.customer-form input:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(77,163,255,.18);
+}
+
+.form-error{
+  display:none;
+  margin-top:12px;
+  padding:10px 12px;
+  border-radius:12px;
+  background:#fff0f0;
+  color:#b04a4a;
+  border:1px solid rgba(176,74,74,.18);
+  font-size:13px;
+  line-height:1.5;
+  font-weight:600;
+}
+
+.form-error.show{display:block}
+
 .flow{
   display:flex;
   gap:8px;
@@ -324,6 +371,25 @@ footer{
             <p class="price" id="depositPrice">£30</p>
             <p class="price-note" id="checkoutNote">Secure checkout via Stripe.</p>
 
+            <form id="customerDetailsForm" class="customer-form">
+              <div>
+                <label for="customerName">Full name</label>
+                <input id="customerName" name="customerName" type="text" autocomplete="name" placeholder="Your full name" required>
+              </div>
+
+              <div>
+                <label for="customerEmail">Email address</label>
+                <input id="customerEmail" name="customerEmail" type="email" autocomplete="email" placeholder="you@example.com" required>
+              </div>
+
+              <div>
+                <label for="customerPhone">Phone number</label>
+                <input id="customerPhone" name="customerPhone" type="tel" autocomplete="tel" placeholder="Your phone number" required>
+              </div>
+
+              <div id="formError" class="form-error">Please complete your name, email and phone number before continuing.</div>
+            </form>
+
             <div class="flow">
               <span id="flowOne">Step 1: Consultation</span>
               <span id="flowTwo">Step 2: Pay deposit</span>
@@ -364,7 +430,7 @@ const bookingPage = payment.bookingPage || "booking.html";
 const pageTitle = payment.pageTitle || "Secure Your Consultation";
 const stepLabel = payment.stepLabel || "Step 2 of 3";
 const pageIntro = payment.pageIntro ||
-  `To continue with booking, please pay your ${currencySymbol}${depositAmount} consultation deposit below. Your flow remains simple and clear: consultation, deposit, then booking.`;
+  `To continue with booking, please enter your details and pay your ${currencySymbol}${depositAmount} consultation deposit below. Your flow remains simple and clear: consultation, deposit, then booking.`;
 
 const points = payment.points || [
   {
@@ -431,17 +497,56 @@ backBtn.href = businessDomain;
 backBtn.textContent = `← Back to ${businessName}`;
 
 const payBtn = document.getElementById("payDepositBtn");
+const form = document.getElementById("customerDetailsForm");
+const formError = document.getElementById("formError");
+
+const nameInput = document.getElementById("customerName");
+const emailInput = document.getElementById("customerEmail");
+const phoneInput = document.getElementById("customerPhone");
+
+nameInput.value = localStorage.getItem("template_customer_name") || "";
+emailInput.value = localStorage.getItem("template_customer_email") || "";
+phoneInput.value = localStorage.getItem("template_customer_phone") || "";
+
+function saveCustomerDetails() {
+  const name = nameInput.value.trim();
+  const email = emailInput.value.trim();
+  const phone = phoneInput.value.trim();
+
+  localStorage.setItem("template_customer_name", name);
+  localStorage.setItem("template_customer_email", email);
+  localStorage.setItem("template_customer_phone", phone);
+}
+
+function isPlaceholderPaymentLink(link) {
+  return !link || link === "#" || link.includes("your-stripe-payment-link");
+}
+
 payBtn.href = paymentLink;
 
-if (!paymentLink || paymentLink === "#" || paymentLink.includes("your-stripe-payment-link")) {
-  payBtn.addEventListener("click", function(e) {
-    e.preventDefault();
+payBtn.addEventListener("click", function(e) {
+  e.preventDefault();
+
+  if (!form.checkValidity()) {
+    formError.classList.add("show");
+    form.reportValidity();
+    return;
+  }
+
+  formError.classList.remove("show");
+  saveCustomerDetails();
+
+  if (isPlaceholderPaymentLink(paymentLink)) {
     alert("Please add your Stripe Payment Link in config/config.js before using this page.");
-  });
-}
+    return;
+  }
+
+  window.location.href = paymentLink;
+});
 
 const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.get("paid") === "true" || urlParams.get("session_id")) {
+  saveCustomerDetails();
   localStorage.setItem("templateDepositGate", "allowed");
   localStorage.setItem("templateDepositGateTs", String(Date.now()));
   window.location.href = bookingPage.includes("?") ? bookingPage : `${bookingPage}?session_id=paid`;
