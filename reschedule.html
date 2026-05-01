@@ -429,7 +429,7 @@ async function loadBooking(){
   }
 
   try{
-    const res = await fetch(`/api?reschedule=booking&id=${encodeURIComponent(bookingId)}&token=${encodeURIComponent(token)}`);
+    const res = await fetch(`${API_BASE}/api?reschedule=booking&id=${encodeURIComponent(bookingId)}&token=${encodeURIComponent(token)}`)
 
     if(!res.ok){
       summary.innerHTML = "<p>This reschedule link is invalid or has expired.</p>";
@@ -481,7 +481,7 @@ async function loadAvailableSlots(date){
   container.innerHTML = '<div class="slot-message">Loading available times...</div>';
 
   try{
-    const res = await fetch(`/api?type=${encodeURIComponent(bookingType)}&date=${encodeURIComponent(date)}`);
+    const res = await fetch(`${API_BASE}/api?type=${encodeURIComponent(bookingType)}&date=${encodeURIComponent(date)}`)
     const data = await res.json();
 
     const slots = data.slots || [];
@@ -552,7 +552,7 @@ async function confirmReschedule(){
   showStatus("Updating your appointment...", "info");
 
   try{
-    const res = await fetch("/api?reschedule=update", {
+    const res = await fetch(`${API_BASE}/api?reschedule=update`, {
       method:"POST",
       headers:{"Content-Type":"application/json"},
       body:JSON.stringify({
